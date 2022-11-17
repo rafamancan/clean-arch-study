@@ -12,11 +12,10 @@ import { GetAllUsersUseCase } from './use-cases/users/get-all-users.usecase';
   providers: [
     {
       provide: UserRepository,
-      useClass: UsersCacheMemoryRepository
+      useClass: UsersCacheMemoryRepository,
     },
     CreateUserUseCase,
-    GetAllUsersUseCase
+    GetAllUsersUseCase,
   ],
 })
-
-export class AppModule { }
+export class AppModule {}

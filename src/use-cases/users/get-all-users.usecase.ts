@@ -1,15 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { UseCase } from "src/core/base/use-case";
-import { UserCreatedMapper } from "src/core/domain/mappers/users/user-created.mapper";
-import { UserRepository } from "src/core/repositories/user.repository";
-import { UserCreatedDto } from "src/shared/dtos/user-created.dto";
+import { UseCase } from 'src/core/base/use-case';
+import { UserCreatedMapper } from 'src/core/domain/mappers/users/user-created.mapper';
+import { UserRepository } from 'src/core/repositories/user.repository';
+import { UserCreatedDto } from 'src/shared/dtos/user-created.dto';
 
 // TODO: desaclopar o injectable do nestj e trocar por https://www.npmjs.com/package/typedi
 @Injectable()
-export class GetAllUsersUseCase implements UseCase<UserCreatedDto[]>{
+export class GetAllUsersUseCase implements UseCase<UserCreatedDto[]> {
   private userCreatedMapper: UserCreatedMapper;
 
   constructor(private readonly repository: UserRepository) {
@@ -17,9 +17,8 @@ export class GetAllUsersUseCase implements UseCase<UserCreatedDto[]>{
   }
 
   public execute(): Observable<UserCreatedDto[]> {
-    return this.repository.getAll()
-      .pipe(
-        map(data => data.map(this.userCreatedMapper.mapTo))
-      );
+    return this.repository
+      .getAll()
+      .pipe(map((data) => data.map(this.userCreatedMapper.mapTo)));
   }
 }

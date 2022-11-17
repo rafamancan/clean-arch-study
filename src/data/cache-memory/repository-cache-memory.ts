@@ -1,13 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { Observable, of } from "rxjs";
-import { map } from "rxjs/operators";
+import { Injectable } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { Entity } from "src/core/base/entity";
-import { Repository } from "src/core/base/repository";
+import { Entity } from 'src/core/base/entity';
+import { Repository } from 'src/core/base/repository';
 
 @Injectable()
-export class RepositoryCacheMemory<TEntity extends Entity> extends Repository<TEntity>{
-
+export class RepositoryCacheMemory<
+  TEntity extends Entity,
+> extends Repository<TEntity> {
   protected readonly items: TEntity[];
 
   constructor() {
@@ -48,7 +49,7 @@ export class RepositoryCacheMemory<TEntity extends Entity> extends Repository<TE
   }
 
   public getById(id: number): Observable<TEntity> {
-    const items = this.items.find(item => item.id === id);
+    const items = this.items.find((item) => item.id === id);
 
     return of(items);
   }
@@ -58,15 +59,16 @@ export class RepositoryCacheMemory<TEntity extends Entity> extends Repository<TE
   }
 
   public getOne(filter: Partial<TEntity>): Observable<TEntity> {
-    return this.getMany(filter)
-      .pipe(map(items => items.length > 0 ? items[0] : null));
+    return this.getMany(filter).pipe(
+      map((items) => (items.length > 0 ? items[0] : null)),
+    );
   }
 
   public getMany(filter: Partial<TEntity>): Observable<TEntity[]> {
     let filtered = this.items;
 
     for (const key in filter) {
-      filtered = filtered.filter(item => item[key] === filter[key]);
+      filtered = filtered.filter((item) => item[key] === filter[key]);
     }
 
     return of(filtered);
@@ -80,10 +82,10 @@ export class RepositoryCacheMemory<TEntity extends Entity> extends Repository<TE
     }
 
     this.items.splice(index, 1);
-    return of()
+    return of();
   }
 
   private getIndexById(id: number) {
-    return this.items.findIndex(item => item.id === id);
+    return this.items.findIndex((item) => item.id === id);
   }
 }

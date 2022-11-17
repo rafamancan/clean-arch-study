@@ -21,6 +21,5 @@ export class UserCreateMapper extends Mapper<UserCreateDto, UserEntity> {
     user.password = data.password;
 
     return user;
-
   }
 }
